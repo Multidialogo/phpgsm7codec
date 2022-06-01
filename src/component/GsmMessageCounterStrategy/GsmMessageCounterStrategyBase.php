@@ -4,11 +4,11 @@ namespace multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy;
 
 abstract class GsmMessageCounterStrategyBase implements GsmMessageCounterStrategy
 {
-    protected $presentAsOne;
+    protected bool $presentAsOne;
 
-    protected $maxSplitMessageLength;
+    protected int $maxSplitMessageLength;
 
-    protected $maxConcatMessageLength;
+    protected int $maxConcatMessageLength;
 
     function __construct(int $maxMessageLength, ?int $maxConcatMessageLength = null)
     {

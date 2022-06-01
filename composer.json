@@ -5,7 +5,7 @@
   "keywords": ["SMS", "counter", "GSM", "Unicode", "Mobile"],
   "license": "GPL-3.0-only",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.4",
     "ext-mbstring": "*"
   },
   "autoload": {

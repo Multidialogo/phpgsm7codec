@@ -10,12 +10,12 @@ use RuntimeException;
 
 class GsmMessageCounter
 {
-    static $SUPPORTED_GSM_PROTOCOL_VERSIONS = [
+    static array $SUPPORTED_GSM_PROTOCOL_VERSIONS = [
         '03.38',
         '03.40',
     ];
 
-    private $gsmProtocolVersion;
+    private string $gsmProtocolVersion;
 
     function __construct(string $gsmProtocolVersion)
     {
