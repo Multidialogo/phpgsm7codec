@@ -13,7 +13,7 @@ abstract class GsmMessageCounterStrategyBase implements GsmMessageCounterStrateg
     function __construct(int $maxMessageLength, ?int $maxConcatMessageLength = null)
     {
         $this->maxSplitMessageLength = $maxMessageLength;
-        $this->maxConcatMessageLength = $maxConcatMessageLength;
+        $this->maxConcatMessageLength = $maxConcatMessageLength ?? -1;
         $this->presentAsOne = $maxConcatMessageLength != null;
     }
 
