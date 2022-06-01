@@ -2,10 +2,6 @@
 
 namespace multidialogo\phpgsm7codec\component;
 
-use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmConcatMessageCounterStrategy;
-use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmSplitMessageCounterStrategy;
-use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmUnicodeConcatMessageCounterStrategy;
-use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmUnicodeSplitMessageCounterStrategy;
 use RuntimeException;
 
 class GsmMessageCounter
@@ -14,6 +10,11 @@ class GsmMessageCounter
         '03.38',
         '03.40',
     ];
+
+    static int $GSM7_MAX_SINGLE_MESSAGE_LENGTH = 160;
+    static int $GSM7_MAX_CONCAT_MESSAGE_LENGTH = 153;
+    static int $UNICODE_MAX_SINGLE_MESSAGE_LENGTH = 70;
+    static int $UNICODE_MAX_CONCAT_MESSAGE_LENGTH = 67;
 
     private string $gsmProtocolVersion;
 
@@ -31,25 +32,26 @@ class GsmMessageCounter
 
     public function getMessagesCount(string $input, bool $presentAsOne): int
     {
-        $strategy = null;
+        $inputLength = strlen($input);
+        $maxMessageLength = self::$GSM7_MAX_SINGLE_MESSAGE_LENGTH;
 
         switch ($this->gsmProtocolVersion) {
             case '03.38':
             case '03.40':
                 if (CharsetAnalyzer::isValidGSM7String($input)) {
-                    $strategy = $presentAsOne ?
-                        new GsmConcatMessageCounterStrategy() :
-                        new GsmSplitMessageCounterStrategy();
+                    $maxMessageLength = $inputLength > self::$GSM7_MAX_SINGLE_MESSAGE_LENGTH && $presentAsOne ?
+                        self::$GSM7_MAX_CONCAT_MESSAGE_LENGTH :
+                        self::$GSM7_MAX_SINGLE_MESSAGE_LENGTH;
 
                 } else {
-                    $strategy = $presentAsOne ?
-                        new GsmUnicodeConcatMessageCounterStrategy() :
-                        new GsmUnicodeSplitMessageCounterStrategy();
+                    $maxMessageLength = $inputLength > self::$UNICODE_MAX_SINGLE_MESSAGE_LENGTH && $presentAsOne ?
+                        self::$UNICODE_MAX_CONCAT_MESSAGE_LENGTH :
+                        self::$UNICODE_MAX_SINGLE_MESSAGE_LENGTH;
 
                 }
                 break;
         }
 
-        return $strategy->execute($input);
+        return ceil($inputLength / $maxMessageLength);
     }
 }
