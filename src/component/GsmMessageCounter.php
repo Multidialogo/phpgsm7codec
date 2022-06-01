@@ -2,6 +2,10 @@
 
 namespace multidialogo\phpgsm7codec\component;
 
+use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmConcatMessageCounterStrategy;
+use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmSplitMessageCounterStrategy;
+use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmUnicodeConcatMessageCounterStrategy;
+use multidialogo\phpgsm7codec\component\GsmMessageCounterStrategy\GsmUnicodeSplitMessageCounterStrategy;
 use RuntimeException;
 
 class GsmMessageCounter
@@ -10,11 +14,6 @@ class GsmMessageCounter
         '03.38',
         '03.40',
     ];
-
-    static $GSM7_MAX_SINGLE_MESSAGE_LENGTH = 160;
-    static $GSM7_MAX_CONCAT_MESSAGE_LENGTH = 153;
-    static $UNICODE_MAX_SINGLE_MESSAGE_LENGTH = 70;
-    static $UNICODE_MAX_CONCAT_MESSAGE_LENGTH = 67;
 
     private $gsmProtocolVersion;
 
@@ -32,30 +31,25 @@ class GsmMessageCounter
 
     public function getMessagesCount(string $input, bool $presentAsOne): int
     {
-        $result = 0;
-        $inputLength = strlen($input);
+        $strategy = null;
 
-        // FIXME : implement strategy pattern
         switch ($this->gsmProtocolVersion) {
             case '03.38':
             case '03.40':
                 if (CharsetAnalyzer::isValidGSM7String($input)) {
-                    if ($inputLength > self::$GSM7_MAX_SINGLE_MESSAGE_LENGTH && $presentAsOne) {
-                        $maxMessageLength = self::$GSM7_MAX_CONCAT_MESSAGE_LENGTH;
-                    } else {
-                        $maxMessageLength = self::$GSM7_MAX_SINGLE_MESSAGE_LENGTH;
-                    }
+                    $strategy = $presentAsOne ?
+                        new GsmConcatMessageCounterStrategy() :
+                        new GsmSplitMessageCounterStrategy();
+
                 } else {
-                    if ($inputLength > self::$UNICODE_MAX_SINGLE_MESSAGE_LENGTH && $presentAsOne) {
-                        $maxMessageLength = self::$UNICODE_MAX_CONCAT_MESSAGE_LENGTH;
-                    } else {
-                        $maxMessageLength = self::$UNICODE_MAX_SINGLE_MESSAGE_LENGTH;
-                    }
+                    $strategy = $presentAsOne ?
+                        new GsmUnicodeConcatMessageCounterStrategy() :
+                        new GsmUnicodeSplitMessageCounterStrategy();
+
                 }
-                $result = ceil($inputLength / $maxMessageLength);
                 break;
         }
 
-        return $result;
+        return $strategy->execute($input);
     }
 }
