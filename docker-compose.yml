@@ -1,0 +1,5 @@
+services:
+  gsmcodec-php-composer:
+    image: composer:2.3
+    volumes:
+      - .:/app
