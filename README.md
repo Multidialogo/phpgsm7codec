@@ -11,7 +11,7 @@ bool $isValid = static::CharsetAnalyzer.isValidGSM7String(
 
 ### Get the number of non GSM7 characters in a given string
 ```php
-int $extraCodecCharsCount = static::CharsetAnalyzer.countExtraCodecChars(
+$extraCodecCharsCount = static::CharsetAnalyzer.countExtraCodecChars(
     'This string contains one° extra GSM7 character.'
 );
 ```
@@ -21,7 +21,7 @@ int $extraCodecCharsCount = static::CharsetAnalyzer.countExtraCodecChars(
 // 03.40 is the gsm protocol version
 $gsmMessageCounter = new GsmMessageCounter('03.40');
 
-int $messageCount = $gsmMessageCounter->getMessagesCount(
+$messageCount = $gsmMessageCounter->getMessagesCount(
     'This string will generate only one message.',
     true
 )
