@@ -4,7 +4,7 @@ Utils to work with GSM7 codec
 ## How to
 ### Check if a given string contains non GSM7 characters
 ```php
-bool $isValid = static::CharsetAnalyzer.isValidGSM7String(
+$isValid = static::CharsetAnalyzer.isValidGSM7String(
     'This is an invalid GSM7 string°.'
 );
 ```
