@@ -29,5 +29,5 @@ $messageCount = $gsmMessageCounter->getMessagesCount(
 
 ## How to run unit tests
 ```
-docker compose run --rm gsmcodec-php-composer composer exec phpunit .
+docker compose run --rm gsmcodec-php-composer composer exec vendor/bin/phpunit ./src/tests
 ```

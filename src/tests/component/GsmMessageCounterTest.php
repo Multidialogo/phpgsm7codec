@@ -10,13 +10,13 @@ class GsmMessageCounterTest extends TestCase
     /**
      * @dataProvider provideInput
      */
-    public function testGetMessageCount(string $gsmProtocolVersion, string $input, bool $presentAsOne, int $expectedMessageCount)
+    public function testGetMessageCount($gsmProtocolVersion, $input, $presentAsOne, $expectedMessageCount)
     {
         $gsmMessageCounter = new GsmMessageCounter($gsmProtocolVersion);
         static::assertEquals($expectedMessageCount, $gsmMessageCounter->getMessagesCount($input, $presentAsOne));
     }
 
-    public function provideInput(): array
+    public function provideInput()
     {
         return [
             [

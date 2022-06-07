@@ -4,12 +4,12 @@ namespace multidialogo\phpgsm7codec\component;
 
 class CharsetAnalyzer
 {
-    public static function isValidGSM7String(string $input): bool
+    public static function isValidGSM7String($input)
     {
         return 0 === static::countExtraCodecChars($input);
     }
 
-    public static function countExtraCodecChars(string $input): int
+    public static function countExtraCodecChars($input)
     {
         $valid_gsm0338_chars = array(
             '@','Δ',' ','0','¡','P','¿','p',
