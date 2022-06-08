@@ -4,6 +4,7 @@
   "description": "Utils to work with GSM7 codec",
   "keywords": ["SMS", "counter", "GSM", "Unicode", "Mobile"],
   "license": "GPL-3.0-only",
+  "abandoned": "true",
   "require": {
     "php": "^5.5",
     "ext-mbstring": "*"
