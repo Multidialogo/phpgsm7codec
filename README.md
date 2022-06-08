@@ -28,6 +28,15 @@ $messageCount = $gsmMessageCounter->getMessagesCount(
 ```
 
 ## How to run unit tests
+
+Install dependencies including dev ones:
+
+```bash
+docker compose run --rm gsmcodec-php-composer composer exec composer install
 ```
+
+Run phpunit test suite:
+
+```bash
 docker compose run --rm gsmcodec-php-composer composer exec vendor/bin/phpunit .
 ```
