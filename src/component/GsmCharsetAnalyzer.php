@@ -8,7 +8,9 @@ class GsmCharsetAnalyzer
 
     public function __construct(string $protocolVersion)
     {
-        $this->alphabet = require_once (__DIR__ . "/alphabet/{$protocolVersion}.php");
+        // FIXME: a better loading approach would be more secure...
+
+        $this->alphabet = require(__DIR__ . "/alphabet/{$protocolVersion}.php");
     }
 
     public function countExtraCodecChars(string $input): int
